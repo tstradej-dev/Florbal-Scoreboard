@@ -31,6 +31,7 @@ function render() {
       <section class="scoreboards">
         ${state.courts.map((court, index) => courtMarkup(court, index)).join('')}
       </section>
+      <button class="reset-all" id="reset-all">↻ Vynulovat obě hřiště</button>
       <div class="tip"><span>👆</span> Klepni na barvu = gól &nbsp;·&nbsp; přejeď doleva = −1</div>
       ${state.lastAction ? `<button class="undo" id="undo">↶ Poslední změna</button>` : ''}
       ${settingsMarkup()}
@@ -42,7 +43,7 @@ function render() {
 function courtMarkup(court, index) {
   return `
     <article class="court" data-court="${index}">
-      <div class="court-top"><span>HŘIŠTĚ ${index + 1}</span><button class="reset" data-reset="${index}">NOVÝ ZÁPAS</button></div>
+      <div class="court-top"><span>HŘIŠTĚ ${index + 1}</span></div>
       <div class="score-area" data-score-area="${index}">
         <button class="team slovan" data-team="0" style="--team:#1c65d8">
           <img src="${CLUB_LOGO}" alt="" onerror="this.style.display='none'" />
@@ -95,10 +96,12 @@ function undo() {
   render();
 }
 
-function reset(courtIndex) {
-  if (!confirm(`Vynulovat skóre na hřišti ${courtIndex + 1}?`)) return;
-  state.courts[courtIndex].score = [0, 0];
-  state.courts[courtIndex].history = [];
+function resetAll() {
+  if (!confirm('Vynulovat skóre na obou hřištích?')) return;
+  state.courts.forEach(court => {
+    court.score = [0, 0];
+    court.history = [];
+  });
   state.lastAction = null;
   render();
 }
@@ -107,8 +110,8 @@ function bind() {
   document.querySelector('#settings')?.addEventListener('click', () => { state.settingsOpen = true; render(); });
   document.querySelector('#close-settings')?.addEventListener('click', () => { state.settingsOpen = false; render(); });
   document.querySelector('#undo')?.addEventListener('click', undo);
+  document.querySelector('#reset-all')?.addEventListener('click', resetAll);
 
-  document.querySelectorAll('[data-reset]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); reset(Number(btn.dataset.reset)); }));
   document.querySelectorAll('[data-color]').forEach(btn => btn.addEventListener('click', () => {
     state.opponentColor = btn.dataset.color;
     state.settingsOpen = true;
