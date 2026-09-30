@@ -1,8 +1,8 @@
 const CLUB_LOGO = 'https://tjslovanhavirov.eoscms.cz/webimages/club_logo_filename_20240429_051352.png';
 
 const palettes = [
-  { name: 'Žlutá', value: '#f3c316' },
   { name: 'Červená', value: '#e5484d' },
+  { name: 'Žlutá', value: '#f3c316' },
   { name: 'Zelená', value: '#3fa66b' },
   { name: 'Oranžová', value: '#f28c28' },
   { name: 'Fialová', value: '#815ac0' },
@@ -14,7 +14,7 @@ const state = {
     { score: [0, 0], history: [] },
     { score: [0, 0], history: [] }
   ],
-  opponentColor: '#f3c316',
+  opponentColor: '#e5484d',
   settingsOpen: false,
   lastAction: null
 };
