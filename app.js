@@ -53,7 +53,6 @@ function courtMarkup(court, index) {
           <i>+1</i>
         </button>
         <button class="team opponent" data-team="1" style="--team:${state.opponentColor}">
-          <span class="color-dot"></span>
           <span>SOUPEŘ</span>
           <b>${court.score[1]}</b>
           <i>+1</i>
