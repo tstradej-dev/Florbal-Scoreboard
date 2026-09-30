@@ -22,6 +22,9 @@ const state = {
 const app = document.querySelector('#app');
 
 function render() {
+  const totalSlovan = state.courts.reduce((sum, court) => sum + court.score[0], 0);
+  const totalOpponent = state.courts.reduce((sum, court) => sum + court.score[1], 0);
+
   app.innerHTML = `
     <main class="screen">
       <header class="header">
@@ -30,6 +33,11 @@ function render() {
       </header>
       <section class="scoreboards">
         ${state.courts.map((court, index) => courtMarkup(court, index)).join('')}
+      </section>
+      <section class="total-score" aria-label="Součet skóre obou hřišť">
+        <div class="total-team total-slovan"><span>SLOVAN</span><b>${totalSlovan}</b></div>
+        <div class="total-separator">:</div>
+        <div class="total-team total-opponent"><span>SOUPEŘ</span><b>${totalOpponent}</b></div>
       </section>
       <button class="reset-all" id="reset-all">↻ Vynulovat obě hřiště</button>
       <div class="tip"><span>👆</span> Klepni na barvu = gól &nbsp;·&nbsp; přejeď doleva = −1</div>
