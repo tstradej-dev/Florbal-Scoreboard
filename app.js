@@ -11,9 +11,10 @@ const palettes = [
 
 const state = {
   courts: [
-    { score: [0, 0], opponent: '#f3c316', history: [] },
-    { score: [0, 0], opponent: '#e5484d', history: [] }
+    { score: [0, 0], history: [] },
+    { score: [0, 0], history: [] }
   ],
+  opponentColor: '#f3c316',
   settingsOpen: false,
   lastAction: null
 };
@@ -32,7 +33,7 @@ function render() {
       </section>
       <div class="tip"><span>👆</span> Klepni na barvu = gól &nbsp;·&nbsp; přejeď doleva = −1</div>
       ${state.lastAction ? `<button class="undo" id="undo">↶ Poslední změna</button>` : ''}
-      ${state.settingsOpen ? settingsMarkup() : ''}
+      ${settingsMarkup()}
     </main>
   `;
   bind();
@@ -50,7 +51,7 @@ function courtMarkup(court, index) {
           <i>+1</i>
         </button>
         <div class="versus">:</div>
-        <button class="team opponent" data-team="1" style="--team:${court.opponent}">
+        <button class="team opponent" data-team="1" style="--team:${state.opponentColor}">
           <span class="color-dot"></span>
           <span>SOUPEŘ</span>
           <b>${court.score[1]}</b>
@@ -64,13 +65,10 @@ function courtMarkup(court, index) {
 
 function settingsMarkup() {
   return `
-    <div class="settings-panel">
+    <div class="settings-panel" style="${state.settingsOpen ? '' : 'display:none'}">
       <div class="settings-head"><strong>Barva soupeře</strong><button id="close-settings">×</button></div>
-      <div class="settings-courts">
-        ${state.courts.map((court, index) => `
-          <div class="settings-court"><span>Hřiště ${index + 1}</span><div class="colors">${palettes.map(p => `<button class="color-choice ${court.opponent === p.value ? 'selected' : ''}" title="${p.name}" style="background:${p.value}" data-court-color="${index}" data-color="${p.value}"></button>`).join('')}</div></div>
-        `).join('')}
-      </div>
+      <p class="settings-note">Stejná barva platí pro obě hřiště.</p>
+      <div class="colors">${palettes.map(p => `<button class="color-choice ${state.opponentColor === p.value ? 'selected' : ''}" title="${p.name}" style="background:${p.value}" data-color="${p.value}"></button>`).join('')}</div>
     </div>
   `;
 }
@@ -98,10 +96,9 @@ function undo() {
 }
 
 function reset(courtIndex) {
-  const court = state.courts[courtIndex];
   if (!confirm(`Vynulovat skóre na hřišti ${courtIndex + 1}?`)) return;
-  court.score = [0, 0];
-  court.history = [];
+  state.courts[courtIndex].score = [0, 0];
+  state.courts[courtIndex].history = [];
   state.lastAction = null;
   render();
 }
@@ -112,10 +109,10 @@ function bind() {
   document.querySelector('#undo')?.addEventListener('click', undo);
 
   document.querySelectorAll('[data-reset]').forEach(btn => btn.addEventListener('click', e => { e.stopPropagation(); reset(Number(btn.dataset.reset)); }));
-  document.querySelectorAll('[data-court-color]').forEach(btn => btn.addEventListener('click', () => {
-    state.courts[Number(btn.dataset.courtColor)].opponent = btn.dataset.color;
-    render();
+  document.querySelectorAll('[data-color]').forEach(btn => btn.addEventListener('click', () => {
+    state.opponentColor = btn.dataset.color;
     state.settingsOpen = true;
+    render();
   }));
 
   document.querySelectorAll('.team').forEach(button => {
