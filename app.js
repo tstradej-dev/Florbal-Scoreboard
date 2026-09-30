@@ -45,19 +45,21 @@ function courtMarkup(court, index) {
     <article class="court" data-court="${index}">
       <div class="court-top"><span>HŘIŠTĚ ${index + 1}</span></div>
       <div class="score-area" data-score-area="${index}">
+        <div class="goal-mark goal-top" aria-hidden="true"></div>
         <button class="team slovan" data-team="0" style="--team:#1c65d8">
           <img src="${CLUB_LOGO}" alt="" onerror="this.style.display='none'" />
           <span>SLOVAN</span>
           <b>${court.score[0]}</b>
           <i>+1</i>
         </button>
-        <div class="versus">:</div>
         <button class="team opponent" data-team="1" style="--team:${state.opponentColor}">
           <span class="color-dot"></span>
           <span>SOUPEŘ</span>
           <b>${court.score[1]}</b>
           <i>+1</i>
         </button>
+        <div class="goal-mark goal-bottom" aria-hidden="true"></div>
+        <div class="court-lines" aria-hidden="true"></div>
       </div>
       <div class="swipe-hint">← přejetím doleva odečteš gól</div>
     </article>
