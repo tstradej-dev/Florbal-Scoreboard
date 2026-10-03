@@ -1,0 +1,18 @@
+{
+  "name": "Florbal Scoreboard – Slovan Havířov",
+  "short_name": "Florbal Scoreboard",
+  "description": "Jednoduché počítadlo skóre pro dvě florbalová hřiště.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#081a31",
+  "theme_color": "#102b52",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
