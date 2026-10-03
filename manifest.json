@@ -9,9 +9,9 @@
   "orientation": "landscape",
   "icons": [
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "https://www.ostravacup.cz/files/registration/logo/1776059696_slovan-havirov-bez-odlesku.png?v=6",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
