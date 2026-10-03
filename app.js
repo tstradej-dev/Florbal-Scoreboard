@@ -19,6 +19,23 @@ const state = {
   lastAction: null
 };
 
+let wakeLock = null;
+
+async function keepScreenAwake() {
+  if (!('wakeLock' in navigator)) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+  } catch (error) {
+    wakeLock = null;
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') keepScreenAwake();
+});
+
+keepScreenAwake();
+
 const app = document.querySelector('#app');
 
 function render() {
@@ -49,6 +66,7 @@ function render() {
     </main>
   `;
   bind();
+  keepScreenAwake();
 }
 
 function courtMarkup(court, index) {
